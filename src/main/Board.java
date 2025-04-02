@@ -8,7 +8,7 @@ public class Board {
 	private final int MAX_COL = 8;
 	private final int MAX_ROW = 8;
 	private static final int SQUARE_SIZE = 100;
-	private static final int HALF_SQUARE_SIZE = SQUARE_SIZE / 2;
+	private static final int HALF_SQUARE_SIZE = getSquareSize() / 2;
 
 	public void draw(Graphics2D boardGraphics) {
 
@@ -26,14 +26,22 @@ public class Board {
 					switchSquareColor = 0;
 				}
 
-				boardGraphics.fillRect(col * SQUARE_SIZE, row * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE);
+				boardGraphics.fillRect(col * getSquareSize(), row * getSquareSize(), getSquareSize(), getSquareSize());
 			}
-
+			
+			// Need this to alternate color for the next row
 			if (switchSquareColor == 0) {
 				switchSquareColor = 1;
 			} else {
 				switchSquareColor = 0;
 			}
 		}
+	}
+
+	/**
+	 * @return the squareSize
+	 */
+	public static int getSquareSize() {
+		return SQUARE_SIZE;
 	}
 }

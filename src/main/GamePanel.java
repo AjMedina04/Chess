@@ -1,3 +1,4 @@
+
 package main;
 
 import java.awt.Color;
@@ -13,6 +14,11 @@ public class GamePanel extends JPanel implements Runnable {
 	private final int FPS = 60;
 	Thread gameThread;
 	Board board = new Board();
+
+	// COLOR
+	private static final int WHITE = 0;
+	public static final int BLACK = 1;
+	int currentColor = WHITE;
 
 	// default constructor
 	public GamePanel() {
@@ -47,7 +53,7 @@ public class GamePanel extends JPanel implements Runnable {
 				update();
 				repaint();
 				delta--;
-			}ss
+			}
 		}
 	}
 
