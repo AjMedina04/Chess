@@ -13,11 +13,11 @@ public class Board {
 	public void draw(Graphics2D boardGraphics) {
 
 		int switchSquareColor = 0;
-
+		// Nested for loop to create the grid seen on a chess board
 		for (int row = 0; row < MAX_ROW; row++) {
 
 			for (int col = 0; col < MAX_COL; col++) {
-
+				// Alternate colors that are used by boardGraphics for each square
 				if (switchSquareColor == 0) {
 					boardGraphics.setColor(new Color(119, 149, 86));
 					switchSquareColor = 1;
@@ -25,11 +25,11 @@ public class Board {
 					boardGraphics.setColor(new Color(235, 236, 208));
 					switchSquareColor = 0;
 				}
-
+				// Actually draws the grid with correct colors and size
 				boardGraphics.fillRect(col * getSquareSize(), row * getSquareSize(), getSquareSize(), getSquareSize());
 			}
-			
-			// Need this to alternate color for the next row
+
+			// Needed to alternate colors for the next row
 			if (switchSquareColor == 0) {
 				switchSquareColor = 1;
 			} else {

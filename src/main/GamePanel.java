@@ -5,8 +5,11 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.util.ArrayList;
 
 import javax.swing.JPanel;
+
+import piece.Piece;
 
 public class GamePanel extends JPanel implements Runnable {
 	private static final int WINDOW_WIDTH = 1100;
@@ -15,12 +18,14 @@ public class GamePanel extends JPanel implements Runnable {
 	Thread gameThread;
 	Board board = new Board();
 
+	// PIECES
+	private static ArrayList<Piece> pieces = new ArrayList<>();
+
 	// COLOR
 	private static final int WHITE = 0;
 	public static final int BLACK = 1;
-	int currentColor = WHITE;
+	int currentColor = getWhite();
 
-	// default constructor
 	public GamePanel() {
 		setPreferredSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
 		setBackground(new Color(49, 46, 43));
@@ -67,6 +72,13 @@ public class GamePanel extends JPanel implements Runnable {
 
 		Graphics2D boardGraphics = (Graphics2D) graphics;
 		board.draw(boardGraphics);
+	}
+
+	/**
+	 * @return the white
+	 */
+	public static int getWhite() {
+		return WHITE;
 	}
 
 }

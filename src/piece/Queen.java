@@ -2,15 +2,15 @@ package piece;
 
 import main.GamePanel;
 
-public class Pawn extends Piece {
+public class Queen extends Piece {
 
-	public Pawn(int color, int col, int row) {
+	public Queen(int color, int col, int row) {
 		super(color, col, row);
 		// Set different images for white and black
 		if (color == GamePanel.getWhite()) {
-			setImage(getImage("/piece/w-pawn"));
+			setImage(getImage("/piece/w-queen"));
 		} else {
-			setImage(getImage("/piece/b-pawn"));
+			setImage(getImage("/piece/b-queen"));
 		}
 	}
 

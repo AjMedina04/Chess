@@ -17,7 +17,7 @@ public class Main {
 
 		window.setLocationRelativeTo(null);// make the window position more convenient for the user
 		window.setVisible(true);
-
+		
 		gamePanel.launchGame();
 	}
 
