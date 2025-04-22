@@ -8,6 +8,7 @@ import javax.imageio.ImageIO;
 
 import main.Board;
 import main.GamePanel;
+
 /**
  * Lead Author(s):Arturo Medina
  *         References: Morelli, R., & Walde, R. (2016). Java, Java, Java:
@@ -27,6 +28,7 @@ public abstract class Piece {
 	private int pieceColor;
 	private BufferedImage pieceImage;
 	private Piece collidingPiece;
+	private boolean moved;
 
 	public Piece(int pieceColor, int boardCol, int boardRow) {
 
@@ -75,6 +77,7 @@ public abstract class Piece {
 		pixelY = convertRowToY(boardRow);
 		previousCol = convertXToCol(pixelX);
 		previousRow = convertYToRow(pixelY);
+		moved = true;
 
 	}
 
@@ -83,11 +86,10 @@ public abstract class Piece {
 		boardRow = getPreviousRow();
 		pixelX = convertColToX(boardCol);
 		pixelY = convertRowToY(boardRow);
+
 	}
 
-	public boolean isLegalMove(int targetCol, int targetRow) {
-		return true;
-	}
+	public abstract boolean isLegalMove(int targetCol, int targetRow);
 
 	public boolean isWithinBoard(int targetCol, int targetRow) {
 		if (targetCol >= 0 && targetCol <= 7 && targetRow >= 0 && targetRow <= 7) {
@@ -122,6 +124,130 @@ public abstract class Piece {
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * Returns true if this piece currently occupies the given board square.
+	 */
+	public boolean isSameSquare(int targetCol, int targetRow) {
+		return boardCol == targetCol && boardRow == targetRow;
+	}
+
+	/**
+	 * Returns true if moving from this piece’s current square to (targetColumn,
+	 * targetRow) is strictly horizontal or vertical, non‑zero, on the board, and
+	 * has no pieces blocking the path.
+	 */
+	public boolean isStraightPathClear(int targetColumn, int targetRow) {
+		// 1) Must stay on board
+		if (!isWithinBoard(targetColumn, targetRow)) {
+			return false;
+		}
+
+		// 2) Must actually change square
+		if (getPreviousCol() == targetColumn && getPreviousRow() == targetRow) {
+			return false;
+		}
+
+		// 3) Compute how far we’re moving in each axis
+		int deltaColumn = targetColumn - getPreviousCol();
+		int deltaRow = targetRow - getPreviousRow();
+
+		// 4) Must move purely horizontal or purely vertical
+		if (deltaColumn != 0 && deltaRow != 0) {
+			return false;
+		}
+
+		// 5) Determine step direction for each axis: -1, 0, or +1
+		int stepInColumn;
+		if (deltaColumn > 0) {
+			stepInColumn = 1;
+		} else if (deltaColumn < 0) {
+			stepInColumn = -1;
+		} else {
+			stepInColumn = 0;
+		}
+
+		int stepInRow;
+		if (deltaRow > 0) {
+			stepInRow = 1;
+		} else if (deltaRow < 0) {
+			stepInRow = -1;
+		} else {
+			stepInRow = 0;
+		}
+
+		// 6) Walk the squares between start and target
+		int currentColumn = getPreviousCol() + stepInColumn;
+		int currentRow = getPreviousRow() + stepInRow;
+		while (currentColumn != targetColumn || currentRow != targetRow) {
+			for (Piece piece : GamePanel.boardState) {
+				if (piece.isSameSquare(currentColumn, currentRow)) {
+					return false; // path is blocked
+				}
+			}
+			currentColumn += stepInColumn;
+			currentRow += stepInRow;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Returns true if moving from this piece’s current square to (targetColumn,
+	 * targetRow) along a diagonal is 1) on the board, 2) non‑zero, 3) a true
+	 * diagonal (equal column and row distance), and 4) has no pieces blocking the
+	 * path.
+	 */
+	public boolean isDiagonalPathClear(int targetColumn, int targetRow) {
+		// 1) Must stay on board
+		if (!isWithinBoard(targetColumn, targetRow)) {
+			return false;
+		}
+
+		// 2) Must actually change square
+		int startColumn = getPreviousCol();
+		int startRow = getPreviousRow();
+		if (startColumn == targetColumn && startRow == targetRow) {
+			return false;
+		}
+
+		// 3) Must move equal steps in both axes (true diagonal)
+		int deltaColumn = targetColumn - startColumn;
+		int deltaRow = targetRow - startRow;
+		if (Math.abs(deltaColumn) != Math.abs(deltaRow)) {
+			return false;
+		}
+
+		// 4) Determine step direction for each axis: +1 or -1
+		int stepInColumn;
+		if (deltaColumn > 0) {
+			stepInColumn = 1;
+		} else {
+			stepInColumn = -1;
+		}
+
+		int stepInRow;
+		if (deltaRow > 0) {
+			stepInRow = 1;
+		} else {
+			stepInRow = -1;
+		}
+
+		// 5) Walk each square between start and target (exclusive)
+		int currentColumn = startColumn + stepInColumn;
+		int currentRow = startRow + stepInRow;
+		while (currentColumn != targetColumn && currentRow != targetRow) {
+			for (Piece piece : GamePanel.boardState) {
+				if (piece.isSameSquare(currentColumn, currentRow)) {
+					return false; // path is blocked
+				}
+			}
+			currentColumn += stepInColumn;
+			currentRow += stepInRow;
+		}
+
+		return true;
 	}
 
 	// ====== POSITION CONVERSION METHODS ======
@@ -230,6 +356,21 @@ public abstract class Piece {
 	 */
 	public Piece getCollidingPiece() {
 		return collidingPiece;
+	}
+
+	/**
+	 * @return the moved
+	 */
+	public boolean isMoved() {
+		return moved;
+	}
+
+	// color is int and WHITE is int value and must use == comparison
+	public boolean isWhite(int color) {
+		if (GamePanel.WHITE == color) {
+			return true;
+		}
+		return false;
 	}
 
 }

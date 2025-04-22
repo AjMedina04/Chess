@@ -12,8 +12,8 @@ import java.awt.Graphics2D;
  *         **/
 public class Board {
 
-	private final int MAX_COL = 8;
-	private final int MAX_ROW = 8;
+	private static final int MAX_COL = 8;
+	private static final int MAX_ROW = 8;
 	private static final int SQUARE_SIZE = 100; // each side is 100 pixels
 	private static final int HALF_SQUARE_SIZE = SQUARE_SIZE / 2;
 

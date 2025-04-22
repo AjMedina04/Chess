@@ -1,6 +1,4 @@
 package piece;
-
-import main.GamePanel;
 /**
  * Lead Author(s):Arturo Medina
  *         References: Morelli, R., & Walde, R. (2016). Java, Java, Java:
@@ -13,9 +11,9 @@ public class King extends Piece {
 	// Constructor for the King piece
 	public King(int color, int col, int row) {
 		super(color, col, row); // Call the superclass constructor to initialize position and color
-
+		
 		// Set image based on the piece's color
-		if (color == GamePanel.getWhite()) {
+		if(isWhite(color)) {
 			setPieceImage(getPieceImage("/piece/w-king")); // White king image
 		} else {
 			setPieceImage(getPieceImage("/piece/b-king")); // Black king image

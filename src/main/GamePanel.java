@@ -17,21 +17,27 @@ import piece.Pawn;
 import piece.Piece;
 import piece.Queen;
 import piece.Rook;
+
 /**
- * Lead Author(s):Arturo Medina
- *         References: Morelli, R., & Walde, R. (2016). Java, Java, Java:
- *         Object-Oriented Problem Solving. Retrieved from
- *         https://open.umn.edu/opentextbooks/textbooks/java-java-java-object-oriented-problem-solving
- *         This project was informed by a tutorial from RyiSnow on building a chess game in Java
- *         **/
-/**
- * Main game panel that manages the chess game state, rendering, piece movement,
- * and player interactions. Implements the game loop and mouse input handling.
- */
+ * Lead Author(s):Arturo Medina References: Morelli, R., & Walde, R. (2016).
+ * Java, Java, Java: Object-Oriented Problem Solving. Retrieved from
+ * https://open.umn.edu/opentextbooks/textbooks/java-java-java-object-oriented-problem-solving
+ * This project was informed by a tutorial from RyiSnow on building a chess game
+ * in Java
+ **/
+
 public class GamePanel extends JPanel implements Runnable {
+	/**
+	 * Main game panel that manages the chess game state, rendering, piece movement,
+	 * and player interactions. Implements the game loop and mouse input handling.
+	 * 
+	 * GamePanel is Runnable because it defines the game‐loop logic, and it has-a
+	 * Thread so it can run that logic in its own thread.
+	 */
+
 	private static final int WINDOW_WIDTH = 1100;
 	private static final int WINDOW_HEIGHT = 800;
-	private final int FPS = 60;
+	private static final int FPS = 60;
 	private Thread gameThread;
 	private Board board = new Board();
 	private Mouse mouseHandler = new Mouse();
@@ -44,8 +50,8 @@ public class GamePanel extends JPanel implements Runnable {
 	public static ArrayList<Piece> displayPieces = new ArrayList<>();
 
 	// Player colors
-	private static final int WHITE = 0;
-	private static final int BLACK = 1;
+	public static final int WHITE = 0;
+	public static final int BLACK = 1;
 	private int currentPlayerColor = WHITE; // Start game with whites turn first
 
 	// Booleans
@@ -74,12 +80,9 @@ public class GamePanel extends JPanel implements Runnable {
 	@Override
 	public void run() {
 
-		double drawInterval = 1000000000 / FPS; // 1 billion nano seconds / 60frames (desired frame rate) =
-												// 16666666.66666667 nanoseconds per frame (desired frame rate in
-												// nanoseconds)
-												// 0.01666666666666667 seconds per frame = 60 frames per second
+		double drawInterval = 1000000000 / FPS;
 		double delta = 0;
-		long lastTime = System.nanoTime(); // check nano sec time
+		long lastTime = System.nanoTime();
 		long currentTime;
 
 		while (gameThread != null) { // keeps the game loop running while the program is running
@@ -258,13 +261,6 @@ public class GamePanel extends JPanel implements Runnable {
 			selectedPiece.draw(chessGraphics);
 
 		}
-	}
-
-	/**
-	 * @return the white
-	 */
-	public static int getWhite() {
-		return WHITE;
 	}
 
 }
