@@ -54,7 +54,8 @@ public class Pawn extends Piece {
 		if (colDifference == 0 && rowDifference == direction) {
 			return isDestinationValid(targetColumn, targetRow, false);
 		}
-		// Double forward move: only if pawn has not moved yet, both squares must be empty
+		// Double forward move: only if pawn has not moved yet, both squares must be
+		// empty
 		if (colDifference == 0 && rowDifference == 2 * direction && !hasMoved()) {
 			int intermediateRow = getPreviousRow() + direction;
 			return getCollidingPiece(targetColumn, intermediateRow) == null
@@ -68,6 +69,20 @@ public class Pawn extends Piece {
 		return false;
 	}
 
+	/**
+	 * Determines if the destination square at (targetCol, targetRow) is valid for
+	 * the pawn, based on the type of move (forward or diagonal).
+	 *
+	 * For forward moves (isDiagonal == false), the destination must be empty. For
+	 * diagonal moves (isDiagonal == true), the destination must contain an
+	 * opponent's piece.
+	 *
+	 * @param targetCol  The target column to move to
+	 * @param targetRow  The target row to move to
+	 * @param isDiagonal True if the move is diagonal (capture), false if forward
+	 * @return true if the destination is valid for the pawn's move type, false
+	 *         otherwise
+	 */
 	public boolean isDestinationValid(int targetCol, int targetRow, boolean isDiagonal) {
 		setCollidingPiece(getCollidingPiece(targetCol, targetRow));
 		if (isDiagonal) {
