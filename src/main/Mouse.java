@@ -2,13 +2,18 @@ package main;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
 /**
  * Lead Author(s):Arturo Medina
- *         References: Morelli, R., & Walde, R. (2016). Java, Java, Java:
- *         Object-Oriented Problem Solving. Retrieved from
- *         https://open.umn.edu/opentextbooks/textbooks/java-java-java-object-oriented-problem-solving
- *         This project was informed by a tutorial from RyiSnow on building a chess game in Java
- *         **/
+ * 
+ * References: Morelli, R., & Walde, R. (2016). Java, Java, Java:
+ * Object-Oriented Problem Solving. Retrieved from
+ * https://open.umn.edu/opentextbooks/textbooks/java-java-java-object-oriented-problem-solving
+ * 
+ * RyiSnow. (2023, December 4). How to Code Chess in Java [Video]. YouTube.
+ * https://www.youtube.com/watch?v=jzCxywhTAUI&t=4612s
+ * 
+ **/
 public class Mouse extends MouseAdapter {
 
 	private int pixelX, pixelY;

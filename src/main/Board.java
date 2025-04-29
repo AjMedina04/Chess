@@ -5,10 +5,10 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 
 /**
- * Lead Author(s):Arturo Medina 
+ * Lead Author(s):Arturo Medina
  * 
- * References: Morelli, R., & Walde, R. (2016).
- * Java, Java, Java: Object-Oriented Problem Solving. Retrieved from
+ * References: Morelli, R., & Walde, R. (2016). Java, Java, Java:
+ * Object-Oriented Problem Solving. Retrieved from
  * https://open.umn.edu/opentextbooks/textbooks/java-java-java-object-oriented-problem-solving
  * 
  * RyiSnow. (2023, December 4). How to Code Chess in Java [Video]. YouTube.
