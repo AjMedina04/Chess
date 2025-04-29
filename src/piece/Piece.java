@@ -359,9 +359,16 @@ public abstract class Piece {
 	}
 
 	/**
+	 * @param collidingPiece the collidingPiece to set
+	 */
+	public void setCollidingPiece(Piece collidingPiece) {
+		this.collidingPiece = collidingPiece;
+	}
+
+	/**
 	 * @return the moved
 	 */
-	public boolean isMoved() {
+	public boolean hasMoved() {
 		return moved;
 	}
 

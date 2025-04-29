@@ -52,7 +52,7 @@ public class GamePanel extends JPanel implements Runnable {
 	// Player colors
 	public static final int WHITE = 0;
 	public static final int BLACK = 1;
-	private int currentPlayerColor = WHITE; // Start game with whites turn first
+	private int currentPlayerTurn = WHITE; // Start game with whites turn first
 
 	// Booleans
 	boolean validMove;
@@ -190,7 +190,7 @@ public class GamePanel extends JPanel implements Runnable {
 				// Check list of displayPieces
 				for (Piece piece : displayPieces) {
 					// If the mouse is on an ally piece, pick it up as the activePiece
-					if (piece.getPieceColor() == currentPlayerColor
+					if (piece.getPieceColor() == currentPlayerTurn
 							&& piece.getBoardCol() == mouseHandler.getPixelX() / Board.getSquareSize()
 							&& piece.getBoardRow() == mouseHandler.getPixelY() / Board.getSquareSize()) {
 						selectedPiece = piece;
@@ -213,6 +213,9 @@ public class GamePanel extends JPanel implements Runnable {
 					// the simulation
 					copyPieceState(displayPieces, boardState);
 					selectedPiece.updatePosition();
+
+					// Switch the turn to the other player after a valid move
+					currentPlayerTurn = (currentPlayerTurn == WHITE) ? BLACK : WHITE;
 
 				} else {
 

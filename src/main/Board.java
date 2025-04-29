@@ -3,13 +3,18 @@ package main;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+
 /**
- * Lead Author(s):Arturo Medina
- *         References: Morelli, R., & Walde, R. (2016). Java, Java, Java:
- *         Object-Oriented Problem Solving. Retrieved from
- *         https://open.umn.edu/opentextbooks/textbooks/java-java-java-object-oriented-problem-solving
- *         This project was informed by a tutorial from RyiSnow on building a chess game in Java.
- *         **/
+ * Lead Author(s):Arturo Medina 
+ * 
+ * References: Morelli, R., & Walde, R. (2016).
+ * Java, Java, Java: Object-Oriented Problem Solving. Retrieved from
+ * https://open.umn.edu/opentextbooks/textbooks/java-java-java-object-oriented-problem-solving
+ * 
+ * RyiSnow. (2023, December 4). How to Code Chess in Java [Video]. YouTube.
+ * https://www.youtube.com/watch?v=jzCxywhTAUI&t=4612s
+ * 
+ **/
 public class Board {
 
 	private static final int MAX_COL = 8;
