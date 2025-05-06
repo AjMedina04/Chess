@@ -1,4 +1,3 @@
-
 package main;
 
 import java.awt.AlphaComposite;
@@ -29,36 +28,52 @@ import piece.Rook;
  * https://www.youtube.com/watch?v=jzCxywhTAUI&t=4612s
  * 
  **/
+/**
+ * Main game panel that manages the chess game state, rendering, piece movement,
+ * and player interactions. Implements the game loop and mouse input handling.
+ **/
+// A GamePanel is-a JPanel and is Runnable
 public class GamePanel extends JPanel implements Runnable {
-	/**
-	 * Main game panel that manages the chess game state, rendering, piece movement,
-	 * and player interactions. Implements the game loop and mouse input handling.
-	 * 
+	/*
 	 * GamePanel is Runnable because it defines the game‐loop logic, and it has-a
 	 * Thread so it can run that logic in its own thread.
 	 */
 
+	// A GamePanel has-a WINDOW_WIDTH (window width in pixels)
 	private static final int WINDOW_WIDTH = 1100;
+	// A GamePanel has-a WINDOW_HEIGHT (window height in pixels)
 	private static final int WINDOW_HEIGHT = 800;
+	// A GamePanel has-a FPS (frames per second target)
 	private static final int FPS = 60;
+	// A GamePanel has-a gameThread (thread executing the game loop)
 	private Thread gameThread;
+	// A GamePanel has-a board (chessboard model and renderer)
 	private Board board = new Board();
+	// A GamePanel has-a mouseHandler (mouse event handler)
 	private Mouse mouseHandler = new Mouse();
 
 	// Piece collections
+	// A GamePanel has-a selectedPiece (currently selected chess piece)
 	private Piece selectedPiece;
 	// Stores the official game state - used for resetting when invalid moves occur
+	// A GamePanel has-a boardState
 	public static ArrayList<Piece> boardState = new ArrayList<>();
 	// Working copy that shows current visual state including drag operations
+	// A GamePanel has-a displayPieces
 	public static ArrayList<Piece> displayPieces = new ArrayList<>();
 
 	// Player colors
+	// A GamePanel has-a WHITE constant (identifier for white pieces)
 	public static final int WHITE = 0;
+	// A GamePanel has-a BLACK constant (identifier for black pieces)
 	public static final int BLACK = 1;
+	// A GamePanel has-a currentPlayerTurn (tracks whose turn it is)
 	private int currentPlayerTurn = WHITE; // Start game with whites turn first
 
 	// Booleans
+	// A GamePanel has-a validMove (flag if current drag is a legal move)
 	boolean validMove;
+	// A GamePanel has-a validDestination (flag if current drop square is valid)
 	boolean validDestination;
 
 	public GamePanel() {
@@ -212,10 +227,28 @@ public class GamePanel extends JPanel implements Runnable {
 				// If destination is valid
 				if (validDestination) {
 
+					// Pawn move handling: update, en passant capture, and promotion
+					if (selectedPiece instanceof Pawn) {
+						Pawn pawn = (Pawn) selectedPiece;
+						int origCol = pawn.getPreviousCol();
+						int origRow = pawn.getPreviousRow();
+						pawn.updatePosition();
+						pawn.enPassant(displayPieces, origCol, origRow);
+						if (pawn.isEnPassantEligible())
+							clearEnPassantEligibilityExcept(pawn);
+						else
+							clearEnPassantEligibilityForAll();
+						if (pawn.shouldPromote()) {
+							pawn.promote(displayPieces);
+						}
+					} else {
+						selectedPiece.updatePosition();
+						clearEnPassantEligibilityForAll();
+					}
+
 					// Update the piece list in case a piece has been captured and removed during
-					// the simulation
+					// the simulation, including promotion
 					copyPieceState(displayPieces, boardState);
-					selectedPiece.updatePosition();
 
 					// Switch the turn to the other player after a valid move
 					currentPlayerTurn = (currentPlayerTurn == WHITE) ? BLACK : WHITE;
@@ -230,6 +263,22 @@ public class GamePanel extends JPanel implements Runnable {
 			}
 		}
 
+	}
+
+	/** Clears en passant eligibility on all pawns except the provided pawn. */
+	public void clearEnPassantEligibilityExcept(Pawn pawn) {
+		for (Piece other : displayPieces) {
+			if (other instanceof Pawn && other != pawn)
+				((Pawn) other).clearEnPassantEligible();
+		}
+	}
+
+	/** Clears en passant eligibility on all pawns. */
+	public void clearEnPassantEligibilityForAll() {
+		for (Piece other : displayPieces) {
+			if (other instanceof Pawn)
+				((Pawn) other).clearEnPassantEligible();
+		}
 	}
 
 	// needed to implement graphics

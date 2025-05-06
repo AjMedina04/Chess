@@ -1,5 +1,7 @@
 package piece;
 
+import java.util.List;
+
 /**
  * Lead Author(s):Arturo Medina 
  * 
@@ -15,7 +17,13 @@ package piece;
  * The Pawn class represents a pawn chess piece and contains logic for
  * determining if a pawn's move is legal according to chess rules.
  */
+// Pawn is-a Piece, inherits common piece behavior, position, movement,
+// rendering
 public class Pawn extends Piece {
+
+	// A Pawn has-a enPassantEligible (flag indicating vulnerability to en passant
+	// capture, true for one turn after a two-square advance)
+	private boolean enPassantEligible = false;
 
 	/**
 	 * Constructor for the Pawn piece. Sets the color, initial position, and
@@ -61,13 +69,23 @@ public class Pawn extends Piece {
 		// Double forward move: only if pawn has not moved yet, both squares must be
 		// empty
 		if (colDifference == 0 && rowDifference == 2 * direction && !hasMoved()) {
+			enPassantEligible = true;
 			int intermediateRow = getPreviousRow() + direction;
 			return getCollidingPiece(targetColumn, intermediateRow) == null
 					&& isDestinationValid(targetColumn, targetRow, false);
 		}
 		// Diagonal capture: must be one square diagonally forward, and capture opponent
 		if (Math.abs(colDifference) == 1 && rowDifference == direction) {
-			return isDestinationValid(targetColumn, targetRow, true);
+			// Normal diagonal capture
+			if (isDestinationValid(targetColumn, targetRow, true)) {
+				return true;
+			}
+			// En passant capture
+			if (getCollidingPiece(targetColumn, getPreviousRow()) instanceof Pawn
+					&& ((Pawn) getCollidingPiece(targetColumn, getPreviousRow())).isEnPassantEligible()) {
+				return true;
+			}
+
 		}
 		// Illegal move: return false
 		return false;
@@ -96,5 +114,54 @@ public class Pawn extends Piece {
 			// Forward move: must be empty
 			return getCollidingPiece() == null;
 		}
+	}
+
+	public boolean shouldPromote() {
+		int promotionRow = isWhite(getPieceColor()) ? 0 : 7;
+		return getBoardRow() == promotionRow;
+	}
+
+	/**
+	 * Returns true if this pawn is vulnerable to en passant capture.
+	 */
+	public boolean isEnPassantEligible() {
+		return enPassantEligible;
+	}
+
+	/**
+	 * Clears en passant vulnerability. Called after opponent's turn if no capture
+	 * occurred.
+	 */
+	public void clearEnPassantEligible() {
+		enPassantEligible = false;
+	}
+
+	/**
+	 * Performs en passant capture: if this pawn moved diagonally by one and an
+	 * adjacent pawn is eligible, removes it.
+	 * 
+	 * @param displayPieces the list of pieces to update
+	 * @param origCol       original column before the move
+	 * @param origRow       original row before the move
+	 */
+	public void enPassant(List<Piece> displayPieces, int origCol, int origRow) {
+		// En passant: diagonal move by one onto empty square
+		if (Math.abs(getBoardCol() - origCol) == 1 && Math.abs(getBoardRow() - origRow) == 1) {
+			Piece adjacent = getCollidingPiece(getBoardCol(), origRow);
+			if (adjacent instanceof Pawn && ((Pawn) adjacent).isEnPassantEligible()) {
+				displayPieces.remove(adjacent);
+			}
+		}
+	}
+
+	/**
+	 * Promotes this pawn by replacing it with a queen in the provided lists.
+	 */
+	public void promote(List<Piece> displayPieces) {
+		// Replace this pawn with a queen in the display list; boardState will be synced
+		// later
+		displayPieces.remove(this);
+		Piece queen = new Queen(getPieceColor(), getBoardCol(), getBoardRow());
+		displayPieces.add(queen);
 	}
 }

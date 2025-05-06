@@ -10,27 +10,29 @@ import main.Board;
 import main.GamePanel;
 
 /**
- * Lead Author(s):Arturo Medina
- * 
- * References: Morelli, R., & Walde, R. (2016). Java, Java, Java:
- * Object-Oriented Problem Solving. Retrieved from
+ * Lead Author(s):Arturo Medina References: Morelli, R., & Walde, R. (2016).
+ * Java, Java, Java: Object-Oriented Problem Solving. Retrieved from
  * https://open.umn.edu/opentextbooks/textbooks/java-java-java-object-oriented-problem-solving
- * 
  * RyiSnow. (2023, December 4). How to Code Chess in Java [Video]. YouTube.
  * https://www.youtube.com/watch?v=jzCxywhTAUI&t=4612s
  * 
- *
- * Abstract base class representing a chess piece. Handles common piece
+ * /** Abstract base class representing a chess piece. Handles common piece
  * functionality including movement validation, position tracking, collision
  * detection, and rendering.
  */
 public abstract class Piece {
 
+	// A Piece has-a pixelX, pixelY
 	private int pixelX, pixelY;
+	// A Piece has-a boardCol, boardRow, previousCol, previousRow
 	private int boardCol, boardRow, previousCol, previousRow;
+	// A Piece has-a pieceColor
 	private int pieceColor;
+	// A Piece has-a pieceImage
 	private BufferedImage pieceImage;
+	// A Piece has-a collidingPiece
 	private Piece collidingPiece;
+	// A Piece has-a moved flag (track if a piece has moved from orignal position)
 	private boolean moved;
 
 	public Piece(int pieceColor, int boardCol, int boardRow) {
@@ -361,8 +363,8 @@ public abstract class Piece {
 		return collidingPiece;
 	}
 
-	/**
-	 * @param collidingPiece the collidingPiece to set
+	/*
+	 * @param colliding piece to be set
 	 */
 	public void setCollidingPiece(Piece collidingPiece) {
 		this.collidingPiece = collidingPiece;
